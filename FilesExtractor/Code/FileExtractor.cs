@@ -33,19 +33,15 @@ namespace FilesExtractor.Code {
                 return;
             }
             if(entry.Name.EndsWith(ZIP_FILES_EXTENSION)) { //Note: Archive within an archive. 
-                ExtractInnerArchive(entry, fullPath);
+                entry.ExtractToFile(fullPath, true);
+                string newUnZipFolder = fullPath.Substring(0, 
+                    fullPath.LastIndexOf(ZIP_FILES_EXTENSION, StringComparison.OrdinalIgnoreCase));
+                Directory.CreateDirectory(newUnZipFolder);
+                Extract(fullPath, newUnZipFolder);
+                File.Delete(fullPath);
             } else if(_extractionRules.All(r => r.FileFitsRule(entry))) {
                 entry.ExtractToFile(fullPath, true);
             }
-        }
-
-        private void ExtractInnerArchive(ZipArchiveEntry entry, string fullPath) {
-            entry.ExtractToFile(fullPath, true);
-            string newUnZipFolder =
-                fullPath.Substring(0, fullPath.LastIndexOf(ZIP_FILES_EXTENSION, StringComparison.OrdinalIgnoreCase));
-            Directory.CreateDirectory(newUnZipFolder);
-            Extract(fullPath, newUnZipFolder);
-            File.Delete(fullPath);
         }
 
         private bool IsFolder(ZipArchiveEntry entry) {
