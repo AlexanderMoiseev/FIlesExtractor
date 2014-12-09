@@ -25,7 +25,7 @@ namespace FilesExtractor {
             var fileExtractor = new FileExtractor(FiltersFactory.CreateFiltersByArguments(argumentsKeyValues));
 
             try {
-                string[] zippedFilesPaths = Directory.GetFiles(sourceDirectory, string.Format("*{0}", FileExtractor.ZIP_FILES_EXTENSION));
+                string[] zippedFilesPaths = Directory.GetFiles(sourceDirectory, string.Format("{0}", FileExtractor.ZIP_FILES_EXTENSION));
                 Queue<Task> pendingTaskQueue = CreateTaskQueue(zippedFilesPaths, fileExtractor);
                 var taskPool = new Task[Math.Min(pendingTaskQueue.Count, MAX_TASK_POOL_SIZE)];
                 TaskHelper.ProcessTaskPoolToCompletion(taskPool, pendingTaskQueue); // Note: Processes tasks by batches of size MAX_TASK_POOL_SIZE each

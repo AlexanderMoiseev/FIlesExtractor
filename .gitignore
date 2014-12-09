@@ -6,3 +6,4 @@ obj/
 # File patterns   #
 ###################
 *.suo
+*.user
